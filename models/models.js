@@ -17,7 +17,10 @@ User.init({
 class Message extends Model{}
 Message.init({
     content: DataTypes.STRING,
-    upVotes: DataTypes.INTEGER,
+    upVotes:{
+        type:DataTypes.INTEGER,
+        default:0
+    } ,
     time: DataTypes.TIME,
 }, {sequelize})
 

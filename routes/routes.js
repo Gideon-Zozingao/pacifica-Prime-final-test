@@ -51,12 +51,30 @@ router.post('/createUser', async function(req, res){
     
 })
 
-router.post("/vote",(req,res)=>{
+router.post("/vote",async(req,res)=>{
     let token=req.cookies.token;
     let messageId=req.body.messageId;
     if(token){
+        await Message.findOne({
+            where:{
+                id:messageId
+            }
+        }).then((message)=>{
+            let score=message.upVotes++
+            Message.update({
+                    upVotes:score,
+                where:{
+                    id:messageId
+                }
+            }).then(()=>{
+                console.log(message.upVotes)
+                res.redirect("/")
+            })
+                
+            
+        })
         
-            res.redirect("/")
+            
     }else{
             res.redirect("/login")
     }
@@ -122,7 +140,8 @@ router.post('/message', async function(req, res){
             if(user){
                 let msg =  Message.create({
             content,
-            userId: user.id
+            userId: user.id,
+            upVotes:0
         }).then((msg)=>{
             console.log(msg)
            res.redirect('/') 
