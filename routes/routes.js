@@ -12,9 +12,25 @@ router.get('/', async function (req, res){
 })
 
 router.get('/createUser', async function(req, res){
-    res.render('createUser.ejs')
+    let token = req.cookies.token 
+    if(token){
+        res.redirect("/")
+    }else{
+        res.render('createUser.ejs')
+    }
+    
 })
 
+router.get("/logout",(req,res)=>{
+    let token = req.cookies.token
+    if(token){
+        res.cookie("token","");
+         res.redirect("/");
+    }else{
+        res.redirect("/");
+
+    }
+})
 router.post('/createUser', async function(req, res){
     let { username, password } = req.body
 
@@ -33,6 +49,19 @@ router.post('/createUser', async function(req, res){
     }
 
     
+})
+
+router.post("/vote",(req,res)=>{
+    let token=req.cookies.token;
+    let messageId=req.body.messageId;
+    if(token){
+        
+            res.redirect("/")
+    }else{
+            res.redirect("/login")
+    }
+    res.redirect("/");
+
 })
 
 router.get('/login', function(req, res) {

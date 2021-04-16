@@ -3,7 +3,7 @@ const {Model, DataTypes, Sequelize} = require('sequelize');
 const sequelize = new Sequelize({
     dialect: "sqlite",
     storage: "../temp.db",
-    logging: false
+    //logging: false
 })
 
 class User extends Model {}
@@ -17,6 +17,7 @@ User.init({
 class Message extends Model{}
 Message.init({
     content: DataTypes.STRING,
+    upVotes: DataTypes.INTEGER,
     time: DataTypes.TIME,
 }, {sequelize})
 

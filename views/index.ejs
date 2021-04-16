@@ -15,14 +15,19 @@
         <a href="/createUser">Create an account</a> | 
         <a href="/login">Login</a> |
         <a href="/message">post a message</a> | 
+        <a href="/logout">logout</a> | 
     <hr>
 
     <h2>Messages</h2>
 
     <% for (let message of locals.messages) { %> 
         <div>
-            <%= message.dataValues.content %> 
+            <%= message.dataValues.content %><span><%= message.dataValues.upVotes%></span> <form action="/vote" method="post">
+                <input type="hidden" name="upVote" value="<%=message.dataValues.upVotes %>">
+                <input type="hidden" name="messageId" value="<%=message.dataValues.id %>">
+                <button type="submit">Vote</button></form>
         </div>
+        <hr>
     <% } %>
 
 </body>
