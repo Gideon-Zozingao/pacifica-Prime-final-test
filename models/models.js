@@ -24,7 +24,7 @@ User.hasMany(Message)
 Message.belongsTo(User);
 
 (async()=>{
-    sequelize.sync({force:true})
+    sequelize.sync()
 })()
 
 module.exports = {

@@ -36,7 +36,13 @@ router.post('/createUser', async function(req, res){
 })
 
 router.get('/login', function(req, res) {
-    res.render('login')
+    let token = req.cookies.token 
+    if(token){
+        res.redirect("/")
+    }else{
+        res.render('login')
+    }
+    
 })
 
 router.post('/login', async function(req, res) {
@@ -63,13 +69,10 @@ router.post('/login', async function(req, res) {
     } catch (e) {
         console.log(e)
     }
-
-    
 })
 
 router.get('/message', async function (req, res) {
     let token = req.cookies.token 
-
     if (token) {                                      // very bad, no verify, don't do this
         res.render('message')
     } else {
@@ -86,14 +89,24 @@ router.post('/message', async function(req, res){
  
         let user = await User.findOne({
             where: {username: payload.username}
-        })
-
-        let msg = await Message.create({
+        }).then((user)=>{
+            if(user){
+                let msg =  Message.create({
             content,
             userId: user.id
+        }).then((msg)=>{
+            console.log(msg)
+           res.redirect('/') 
         })
-
-        res.redirect('/')
+        
+            }else{
+              res.redirect('/error')  
+            }
+        }).catch((error)=>{
+            console.log(error);
+            res.redirect('/error')
+        })
+        
     } else {
         res.redirect('/login')
     }
